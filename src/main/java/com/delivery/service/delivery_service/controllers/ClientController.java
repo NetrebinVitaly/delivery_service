@@ -1,9 +1,7 @@
 package com.delivery.service.delivery_service.controllers;
 
 import com.delivery.service.delivery_service.dto.OrderDto;
-import com.delivery.service.delivery_service.dto.UserDto;
 import com.delivery.service.delivery_service.entities.OrderEntity;
-import com.delivery.service.delivery_service.entities.UserEntity;
 import com.delivery.service.delivery_service.services.OrderService;
 import com.delivery.service.delivery_service.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,16 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequestMapping("/api")
 public class ClientController {
     UserService userService;
     OrderService orderService;
-
-
-    @Operation(summary = "Register new client")
-    @PostMapping("/client")
-    ResponseEntity<UserEntity> createClient(@RequestBody UserDto dto){
-        return new ResponseEntity<>(userService.registration(dto), HttpStatus.OK);
-    }
 
     @Operation(summary = "Create new order")
     @PostMapping("/client/order")
