@@ -1,0 +1,20 @@
+server:
+  port: 9001
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  lifetime: 86400000
+  header: Authorization
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/delivery_service
+    username: postgres
+    password: pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    open-in-view: false
+    show-sql: true

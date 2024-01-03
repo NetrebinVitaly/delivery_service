@@ -1,0 +1,39 @@
+-- create schema delivery_service;
+--
+-- create table delivery_service.users(
+--     id integer primary key,
+--     login varchar(100) not null,
+--     email varchar(100) not null unique,
+--     password varchar(100) not null
+-- );
+--
+-- create table delivery_service.roles(
+--     id integer primary key,
+--     name varchar(50) not null
+-- );
+--
+-- create table delivery_service.user_roles(
+--     user_id integer not null,
+--     role_id integer not null,
+--     primary key (user_id, role_id),
+--     foreign key (user_id) references delivery_service.users(id),
+--     foreign key (role_id) references delivery_service.roles(id)
+-- );
+--
+-- create table delivery_service.orders(
+--     id integer primary key,
+--     status varchar(20) not null,
+--     description varchar(500)
+-- );
+--
+-- create table orders_delivers_clients(
+--     order_id integer primary key,
+--     deliver_id integer primary key,
+--     client_id integer primary key,
+--     foreign key (order_id) references delivery_service.orders(id),
+--     foreign key (deliver_id) references delivery_service.users(id),
+--     foreign key (client_id) references delivery_service.users(id)
+-- );
+--
+-- insert into delivery_service.roles() values ('ROLE_ADMIN'), ('ROLE_CLIENT'), ('ROLE_DELIVER');
+--
