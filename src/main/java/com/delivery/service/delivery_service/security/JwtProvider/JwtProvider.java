@@ -41,7 +41,7 @@ public class JwtProvider {
     public String createToken(String login, String role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", role);
-        return Jwts.builder()
+        return  Jwts.builder()
                 .claims(claims)
                 .subject(login)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -77,6 +77,7 @@ public class JwtProvider {
     }
 
     public String resolveToken(HttpServletRequest servletRequest) {
+
         return servletRequest.getHeader(header);
     }
 

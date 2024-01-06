@@ -2,6 +2,11 @@ package com.delivery.service.delivery_service.security.config;
 
 import com.delivery.service.delivery_service.entities.enums.Role;
 import com.delivery.service.delivery_service.security.detailServices.ProjectUserDetailsService;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -57,17 +62,6 @@ public class WebSecurityConfig {
                 )
                 .authenticationProvider(authenticationProvider())
                 .with(jwtConfig, Customizer.withDefaults())
-
-                /*.httpBasic(Customizer.withDefaults())
-                .formLogin(*//*Customizer.withDefaults()*//* login -> login
-                        .defaultSuccessUrl("/swagger-ui/index.html"))
-                .logout(logout -> logout
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/login")
-                )*/
-
         ;
 
         return http.build();
@@ -91,5 +85,21 @@ public class WebSecurityConfig {
     @Primary
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder(8);
+    }
+
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
+    }
+
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI().addSecurityItem(new SecurityRequirement().
+                        addList("Authentication"))
+                .components(new Components().addSecuritySchemes
+                        ("Authentication", createAPIKeyScheme()))
+                .info(new Info().title("Delivery Service V1")
+                        .version("1.0"));
     }
 }
