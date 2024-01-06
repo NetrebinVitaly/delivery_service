@@ -20,6 +20,7 @@ public class ClientController {
     UserService userService;
     OrderService orderService;
 
+
     @Operation(summary = "Create new order")
     @PostMapping("/client/order")
     public ResponseEntity<OrderEntity> createNewOrder(@RequestBody OrderDto dto) {

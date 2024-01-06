@@ -45,6 +45,9 @@ public class UserService {
     public UserEntity getUserByLogin(String login) {
         return userRepository.findByLogin(login).get();
     }
+    public UserEntity getUserById(Long id) {
+        return userRepository.findById(id).get();
+    }
 
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();

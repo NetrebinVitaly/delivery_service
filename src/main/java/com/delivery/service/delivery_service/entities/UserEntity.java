@@ -12,8 +12,12 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users"
-        , schema = "delivery_schema")
+@Table(name = "users",
+        indexes = {
+                @Index(columnList = "id", name = "user_id_index"),
+                @Index(columnList = "login", name = "user_login_index"),
+                @Index(columnList = "email", name = "user_email_index")
+        })
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity {
 

@@ -13,7 +13,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "orders", schema = "delivery_schema")
+@Table(name = "orders",
+        indexes = {
+                @Index(columnList = "order_id", name = "order_id_index"),
+                @Index(columnList = "client_id", name = "client_id_index"),
+                @Index(columnList = "courier_id", name = "courier_id_index")})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderEntity {
     @Id

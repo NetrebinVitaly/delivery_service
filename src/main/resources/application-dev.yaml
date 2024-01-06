@@ -6,15 +6,22 @@ jwt:
   header: Authorization
 
 spring:
+  config:
+    activate:
+      on-profile: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/delivery_service
+    url: jdbc:postgresql://localhost:7000/delivery_service
     username: postgres
     password: pass
     driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
 
+  flyway:
+    url: jdbc:postgresql://localhost:7000/delivery_service
+    locations: classpath:migrations
+    user: postgres
+    password: pass
+
+  jpa:
     open-in-view: false
     show-sql: true
 url:
