@@ -38,17 +38,17 @@ public class WebSecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(HttpMethod.GET, "/courier/**").hasAuthority(Role.COURIER.name())
-                        .requestMatchers(HttpMethod.POST, "/courier/**").hasAuthority(Role.COURIER.name())
-                        .requestMatchers(HttpMethod.PATCH, "/courier/**").hasAuthority(Role.COURIER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/courier/**").hasAuthority(Role.COURIER.name())
+                        .requestMatchers(HttpMethod.POST, "/api/courier/**").hasAuthority(Role.COURIER.name())
+                        .requestMatchers(HttpMethod.PATCH, "/api/courier/**").hasAuthority(Role.COURIER.name())
 
-                        .requestMatchers(HttpMethod.GET, "/client/**").hasAuthority(Role.CLIENT.name())
-                        .requestMatchers(HttpMethod.POST, "/client/**").hasAuthority(Role.CLIENT.name())
-                        .requestMatchers(HttpMethod.PATCH, "/client/**").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.GET, "/api/client/**").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.POST, "/api/client/**").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.PATCH, "/api/client/**").hasAuthority(Role.CLIENT.name())
 
-                        .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.PATCH, "/admin/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/api/admin/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/api/admin/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PATCH, "/api/admin/**").hasAuthority(Role.ADMIN.name())
 
                         .requestMatchers(HttpMethod.GET,"/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
