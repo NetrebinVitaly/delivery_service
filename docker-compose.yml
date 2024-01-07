@@ -24,25 +24,6 @@ services:
 
     networks:
       - postgres
-
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4:7.2
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "vit.netrebin@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "pass"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    ports:
-      - "5050:80"
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 1G
-    networks:
-      - postgres
-
 networks:
   postgres:
     driver: bridge
