@@ -7,4 +7,4 @@ git pull https://github.com/Burgoy/delivery_service.git main
 
 
 # Start new deployment with provided env vars in ./
-docker-compose --env-file ./.env -f docker-compose.yml up -d
+docker-compose -f docker-compose.yml up -d
