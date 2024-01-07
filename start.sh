@@ -1,20 +1,10 @@
 #!/bin/bash
 
 # Pull new changes
-git pull
+git init
+git config --global --add safe.directory '*'
+git pull https://github.com/Burgoy/delivery_service.git main
 
-# Prepare JAR
-mvn clean
-mvn package
-
-rc=$?
-# if maven failed, then we will not deploy new version.
-if [ $rc -ne 0 ] ; then
-  echo Could not perform mvn clean install, exit code [$rc]; exit $rc
-fi
-
-# Ensure, that docker-compose stopped
-docker-compose --env-file ./.env stop
 
 # Start new deployment with provided env vars in ./
-docker-compose --env-file ./.env -f docker-compose-prod.yml up -d
+docker-compose --env-file ./.env -f docker-compose.yml up -d

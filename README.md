@@ -8,6 +8,7 @@
 - Maven
 - Spring Boot, Spring Data JPA, Spring Security, Flyway
 - БД PostgreSQL
+- Swagger UI
 - Docker - контейнеры, образы, написание Dockerfile, Docker Compose
 - GitHub Actions
 
@@ -45,4 +46,4 @@ git clone https://github.com/Burgoy/delivery_service.git
 bash start.sh
 ```
 
-- Страница с документацией будет доступна по ссылке: http://localhost:9001/swagger-ui/index.html
+- Страница с документацией будет доступна по ссылке: http://localhost:9999/swagger-ui/index.html
