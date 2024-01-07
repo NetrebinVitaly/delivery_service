@@ -1,5 +1,5 @@
 server:
-  port: 9001
+  port: ${APP_PORT}
 jwt:
   secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
   lifetime: 86400000
@@ -11,8 +11,8 @@ spring:
       on-profile: prod
   datasource:
     url: jdbc:postgresql://postgresqldb:5432/delivery_service
-    username: postgres
-    password: pass
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false
@@ -20,11 +20,11 @@ spring:
 
   flyway:
     url: jdbc:postgresql://postgresqldb:5432/delivery_service
-    user: postgres
-    password: pass
+    user: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     locations: classpath:migrations
 
 url:
   schema: http
   host: localhost
-  port: 9001
+  port: ${APP_PORT}

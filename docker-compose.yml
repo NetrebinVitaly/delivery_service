@@ -4,11 +4,14 @@ services:
     container_name: delivery-service-api
     build: ./
     ports:
-      - "9001:9001"
+      - "${APP_PORT}:9001"
     depends_on:
       - postgresqldb
-    networks:
-      - postgres
+    environment:
+      APP_PORT: ${APP_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
 
 
   postgresqldb:
@@ -16,14 +19,8 @@ services:
     image: postgres:15
     restart: always
     ports:
-      - "7000:5432"
+      - "${POSTGRES_OUT_PORT}:5432"
     environment:
       POSTGRES_DB: "delivery_service"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "pass"
-
-    networks:
-      - postgres
-networks:
-  postgres:
-    driver: bridge
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
