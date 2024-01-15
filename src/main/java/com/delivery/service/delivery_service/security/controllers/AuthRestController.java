@@ -30,7 +30,7 @@ public class AuthRestController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthRequest request) {
+    public ResponseEntity<?> authenticate(@RequestBody AuthRequest request) {
         var token = service.loginUser(request).getToken();
         Map<String, Object> responseMessage = new HashMap<>();
         responseMessage.put("login", request.getLogin());

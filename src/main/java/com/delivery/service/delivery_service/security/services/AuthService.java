@@ -9,6 +9,8 @@ import com.delivery.service.delivery_service.security.JwtUtils.JwtUtils;
 import com.delivery.service.delivery_service.security.dto.AuthRequest;
 import com.delivery.service.delivery_service.security.dto.AuthResponse;
 import com.delivery.service.delivery_service.security.dto.RegistrationRequest;
+import com.delivery.service.delivery_service.utils.ValidationUtil;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +28,7 @@ public class AuthService {
     UserRepository repository;
     JwtUtils jwtUtils;
     PasswordEncoder encoder;
+    ValidationUtil validationUtil;
 
     public AuthResponse loginUser(AuthRequest request){
         manager.authenticate(new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword()));
@@ -41,7 +44,8 @@ public class AuthService {
         return new AuthResponse(token);
     }
 
-    public AuthResponse createUser(RegistrationRequest request){
+    public AuthResponse createUser(@Valid RegistrationRequest request){
+        validationUtil.isValid(request);
         if (!repository.findByLogin(request.getLogin()).isPresent()){
             UserEntity user = UserEntity
                     .builder()
