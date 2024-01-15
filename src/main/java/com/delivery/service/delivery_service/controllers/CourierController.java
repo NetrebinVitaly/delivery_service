@@ -4,7 +4,6 @@ import com.delivery.service.delivery_service.entities.OrderEntity;
 import com.delivery.service.delivery_service.entities.enums.OrderStatus;
 import com.delivery.service.delivery_service.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -42,16 +41,14 @@ public class CourierController {
 
     @Operation(summary = "Select order by order_id")
     @PatchMapping("/courier/order/{id}")
-    public ResponseEntity<OrderEntity> selectOrder(@PathVariable Long id, HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        return new ResponseEntity<>(orderService.updateOrderCourier(id, token), HttpStatus.OK);
+    public ResponseEntity<OrderEntity> selectOrder(@PathVariable Long id){
+        return new ResponseEntity<>(orderService.updateOrderCourier(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Get all nominated orders")
     @GetMapping("/courier-nom")
-    public ResponseEntity<List<OrderEntity>> getAllNominatedOrders(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return new ResponseEntity<>(orderService.getAllCourierOrders(token), HttpStatus.OK);
+    public ResponseEntity<List<OrderEntity>> getAllNominatedOrders() {
+        return new ResponseEntity<>(orderService.getAllCourierOrders(), HttpStatus.OK);
     }
 
 }

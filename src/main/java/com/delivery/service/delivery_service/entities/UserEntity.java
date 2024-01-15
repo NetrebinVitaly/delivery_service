@@ -14,28 +14,22 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @Table(name = "users",
         indexes = {
-                @Index(columnList = "id", name = "user_id_index"),
-                @Index(columnList = "login", name = "user_login_index"),
-                @Index(columnList = "email", name = "user_email_index")
+                @Index(columnList = "login", name = "user_login_index")
         })
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    Long id;
-
     @NotNull
     @Column(name = "login", nullable = false, length = 50)
     String login;
 
     @NotNull
-    @Column(name = "email", unique = true, nullable = false, length = 50)
+    @Column(name = "email", length = 50)
     String email;
 
 
-    @Column(name = "password", nullable = false, length = 500)
+    @Column(name = "password", length = 500)
     String password;
 
     @Column(name = "role")

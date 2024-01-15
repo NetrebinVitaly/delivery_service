@@ -4,7 +4,7 @@ services:
     container_name: delivery-service-api
     build: ./
     ports:
-      - "${APP_PORT}:9001"
+      - "${APP_PORT}:8080"
     depends_on:
       - postgresqldb
     environment:

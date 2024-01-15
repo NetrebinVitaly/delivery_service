@@ -4,7 +4,7 @@ import com.delivery.service.delivery_service.dto.OrderDto;
 import com.delivery.service.delivery_service.entities.OrderEntity;
 import com.delivery.service.delivery_service.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,9 +25,9 @@ public class ClientController {
 
     @Operation(summary = "Create new order")
     @PostMapping("/client/order")
-    public ResponseEntity<OrderEntity> createNewOrder(@RequestBody OrderDto dto, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        return new ResponseEntity<>(orderService.create(dto, token), HttpStatus.CREATED);
+    public ResponseEntity<OrderEntity> createNewOrder(@RequestBody @Valid OrderDto dto/*, HttpServletRequest request*/) {
+//        String token = request.getHeader("Authorization");
+        return new ResponseEntity<>(orderService.create(dto), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Change delivery address")
@@ -46,9 +46,9 @@ public class ClientController {
     }
     @Operation(summary = "Get all client orders")
     @GetMapping("/client/order")
-    public ResponseEntity<List<OrderEntity>> getAllOrders(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        return new ResponseEntity<>(orderService.getAllClientOrders(token), HttpStatus.OK);
+    public ResponseEntity<List<OrderEntity>> getAllOrders(/*HttpServletRequest request*/){
+//        String token = request.getHeader("Authorization");
+        return new ResponseEntity<>(orderService.getAllClientOrders(), HttpStatus.OK);
     }
 
 

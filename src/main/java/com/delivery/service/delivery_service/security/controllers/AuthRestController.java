@@ -1,22 +1,16 @@
 package com.delivery.service.delivery_service.security.controllers;
 
-import com.delivery.service.delivery_service.entities.UserEntity;
-import com.delivery.service.delivery_service.entities.enums.Role;
-import com.delivery.service.delivery_service.repositories.UserRepository;
-import com.delivery.service.delivery_service.security.JwtProvider.JwtProvider;
-import com.delivery.service.delivery_service.security.dto.AuthRequestDto;
-import com.delivery.service.delivery_service.security.dto.RegistrationDto;
+import com.delivery.service.delivery_service.security.dto.AuthRequest;
+import com.delivery.service.delivery_service.security.dto.RegistrationRequest;
+import com.delivery.service.delivery_service.security.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,38 +26,23 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthRestController {
 
-    AuthenticationManager manager;
-    UserRepository repository;
-    JwtProvider jwtProvider;
-    PasswordEncoder encoder;
+    AuthService service;
+
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequestDto dto) {
-
-        manager.authenticate(new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getPassword()));
-        UserEntity user = repository.findByLogin(dto.getLogin()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        String token = jwtProvider.createToken(dto.getLogin(), user.getRoles().name());
-
-        Map<Object, Object> responseMessage = new HashMap<>();
-        responseMessage.put("login", dto.getLogin());
+    public ResponseEntity<?> authenticate(@RequestBody @Valid AuthRequest request) {
+        var token = service.loginUser(request).getToken();
+        Map<String, Object> responseMessage = new HashMap<>();
+        responseMessage.put("login", request.getLogin());
         responseMessage.put("token", token);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registration(@RequestBody RegistrationDto dto) {
-        UserEntity user = UserEntity
-                .builder()
-                .login(dto.getLogin())
-                .email(dto.getEmail())
-                .password(encoder.encode(dto.getPassword()))
-                .roles(Role.CLIENT)
-                .build();
-        repository.save(user);//Save new user in db
-        var token = jwtProvider.createToken(user.getLogin(), user.getPassword());
+    public ResponseEntity<?> registration(@RequestBody @Valid RegistrationRequest request) {
+        var token = service.createUser(request).getToken();
         Map<Object, Object> responseMessage = new HashMap<>();
-        responseMessage.put("login", dto.getLogin());
+        responseMessage.put("login", request.getLogin());
         responseMessage.put("token", token);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }

@@ -8,6 +8,7 @@ import com.delivery.service.delivery_service.entities.enums.Role;
 import com.delivery.service.delivery_service.services.OrderService;
 import com.delivery.service.delivery_service.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -28,7 +29,7 @@ public class AdministratorController {
 
     @Operation(summary = "Creating user")
     @PostMapping("/admin/{role}")
-    public ResponseEntity<UserEntity> createAdmin(@RequestBody UserDto dto,
+    public ResponseEntity<UserEntity> createAdmin(@Valid  @RequestBody UserDto dto,
                                                   @PathVariable Role role){
         return new ResponseEntity<>(service.createUser(dto, role), HttpStatus.OK);
     }

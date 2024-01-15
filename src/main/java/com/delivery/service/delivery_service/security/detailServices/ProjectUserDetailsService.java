@@ -1,8 +1,8 @@
 package com.delivery.service.delivery_service.security.detailServices;
 
-import com.delivery.service.delivery_service.security.details.ProjectUserDetails;
 import com.delivery.service.delivery_service.entities.UserEntity;
 import com.delivery.service.delivery_service.repositories.UserRepository;
+import com.delivery.service.delivery_service.security.details.ProjectUserDetails;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

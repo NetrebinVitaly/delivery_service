@@ -2,6 +2,7 @@ package com.delivery.service.delivery_service.entities;
 
 
 import com.delivery.service.delivery_service.entities.enums.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -16,8 +17,8 @@ import lombok.experimental.FieldDefaults;
 @Table(name = "orders",
         indexes = {
                 @Index(columnList = "order_id", name = "order_id_index"),
-                @Index(columnList = "client_id", name = "client_id_index"),
-                @Index(columnList = "courier_id", name = "courier_id_index")})
+                @Index(columnList = "client", name = "client_index"),
+                @Index(columnList = "courier", name = "courier_index")})
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderEntity {
     @Id
@@ -40,12 +41,14 @@ public class OrderEntity {
     @Column(name = "order_address", nullable = false)
     String address;
 
-    @Basic
-    @Column(name = "courier_id")
-    Long courierId;
+    @ManyToOne
+    @JoinColumn(name = "courier", referencedColumnName = "login")
+    @JsonIgnoreProperties(value = {"login", "password", "roles"})
+    UserEntity courier;
 
-    @Basic
-    @Column(name = "client_id")
-    Long clientId;
+    @ManyToOne
+    @JoinColumn(name = "client", referencedColumnName = "login")
+    @JsonIgnoreProperties(value = {"login", "password", "roles"})
+    UserEntity client;
 
 }
