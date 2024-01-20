@@ -25,11 +25,12 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class DefaultOrderService {
+public class DefaultOrderService implements OrderService{
     OrderRepository orderRepository;
     UserRepository userRepository;
     ValidationUtil validationUtil;
 
+    @Override
     public OrderEntity create(@Valid OrderDto dto) {
         validationUtil.isValid(dto);
         UserEntity client = userRepository.findByLogin(
@@ -47,6 +48,7 @@ public class DefaultOrderService {
                 .build());
     }
 
+    @Override
     public OrderEntity updateOrderStatus(@Valid UpdateOrderStatusRequest request) {
         validationUtil.isValid(request);
         var order = orderRepository.findById(request.getOrderId())
@@ -55,6 +57,7 @@ public class DefaultOrderService {
         return orderRepository.save(order);
     }
 
+    @Override
     public OrderEntity updateOrderAddress(@Valid UpdateOrderAddressRequest request) {
         validationUtil.isValid(request);
         var order = orderRepository.findById(request.getId())
@@ -63,6 +66,7 @@ public class DefaultOrderService {
         return orderRepository.save(order);
     }
 
+    @Override
     public OrderEntity updateOrderCourier(Long orderId) {
         var order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
@@ -72,32 +76,43 @@ public class DefaultOrderService {
         return orderRepository.save(order);
     }
 
-    public void deleteOrderById(Long id) {
+    @Override
+    public void deleteBy(Long id) {
         if (orderRepository.findById(id).isEmpty()) System.out.println("Order not exist");
         orderRepository.deleteById(id);
         if (orderRepository.findById(id).isPresent())throw new BadRequestException("Delete is failed");
 
     }
 
+    @Override
+    public OrderEntity getBy(Long id) {
+        return null;
+    }
+
+    @Override
     public String showDescription(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Order not found")).getDescription();
     }
 
-    public List<OrderEntity> getAllOrders() {
+    @Override
+    public List<OrderEntity> getAll() {
         return orderRepository.findAll();
     }
 
+    @Override
     public List<OrderEntity> getAllClientOrders() {
         UserEntity client = userRepository.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).get();
         return orderRepository.findAllByClient(client).get();
     }
 
+    @Override
     public List<OrderEntity> getAllCourierOrders() {
         UserEntity courier = userRepository.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).get();
         return orderRepository.findAllByCourier(courier).get();
     }
 
+    @Override
     public List<OrderEntity> getAllOrdersWhereCourierIdNull() {
         return orderRepository.findAllByCourier(null).get();
     }
