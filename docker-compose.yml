@@ -12,8 +12,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
-
-
   postgresqldb:
     container_name: postgresqldb
     image: postgres:15

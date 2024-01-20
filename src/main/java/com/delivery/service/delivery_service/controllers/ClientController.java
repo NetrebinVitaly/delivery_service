@@ -49,7 +49,7 @@ public class ClientController {
     @Operation(summary = "Drop order by order_id")
     @DeleteMapping("client/order/{id}")
     public HttpStatus deleteOrder(@PathVariable Long id){
-        defaultOrderService.deleteOrderById(id);
+        defaultOrderService.deleteBy(id);
         return HttpStatus.OK;
     }
 
