@@ -1,9 +1,12 @@
 package com.delivery.service.delivery_service.services;
 
 import com.delivery.service.delivery_service.dto.OrderDto;
+import com.delivery.service.delivery_service.dto.UpdateOrderAddressRequest;
+import com.delivery.service.delivery_service.dto.UpdateOrderStatusRequest;
 import com.delivery.service.delivery_service.entities.OrderEntity;
 import com.delivery.service.delivery_service.entities.UserEntity;
 import com.delivery.service.delivery_service.entities.enums.OrderStatus;
+import com.delivery.service.delivery_service.exceptions.BadRequestException;
 import com.delivery.service.delivery_service.exceptions.NotFoundException;
 import com.delivery.service.delivery_service.repositories.OrderRepository;
 import com.delivery.service.delivery_service.repositories.UserRepository;
@@ -22,11 +25,10 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class OrderService {
+public class DefaultOrderService {
     OrderRepository orderRepository;
     UserRepository userRepository;
     ValidationUtil validationUtil;
-
 
     public OrderEntity create(@Valid OrderDto dto) {
         validationUtil.isValid(dto);
@@ -45,17 +47,19 @@ public class OrderService {
                 .build());
     }
 
-    public OrderEntity updateOrderStatus(Long orderId, OrderStatus status) {
-        var order = orderRepository.findById(orderId)
+    public OrderEntity updateOrderStatus(@Valid UpdateOrderStatusRequest request) {
+        validationUtil.isValid(request);
+        var order = orderRepository.findById(request.getOrderId())
                 .orElseThrow(() -> new NotFoundException("Order not found"));
-        order.setStatus(status);
+        order.setStatus(request.getStatus());
         return orderRepository.save(order);
     }
 
-    public OrderEntity updateOrderAddress(Long orderId, String address) {
-        var order = orderRepository.findById(orderId)
+    public OrderEntity updateOrderAddress(@Valid UpdateOrderAddressRequest request) {
+        validationUtil.isValid(request);
+        var order = orderRepository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Order not found"));
-        order.setAddress(address);
+        order.setAddress(request.getAddress());
         return orderRepository.save(order);
     }
 
@@ -66,6 +70,13 @@ public class OrderService {
                 .orElseThrow(() -> new NotFoundException("User not found exception"));
         order.setCourier(courier);
         return orderRepository.save(order);
+    }
+
+    public void deleteOrderById(Long id) {
+        if (orderRepository.findById(id).isEmpty()) System.out.println("Order not exist");
+        orderRepository.deleteById(id);
+        if (orderRepository.findById(id).isPresent())throw new BadRequestException("Delete is failed");
+
     }
 
     public String showDescription(Long id) {

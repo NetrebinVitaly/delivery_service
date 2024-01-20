@@ -2,18 +2,19 @@ package com.delivery.service.delivery_service.exceptions;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ErrorDto extends ResponseEntityExceptionHandler {
-    String errors;
+    private String errors;
 
     @JsonProperty("error_description")
-    String errorDescription;
+    private String errorDescription;
 }

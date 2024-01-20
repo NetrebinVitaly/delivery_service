@@ -32,7 +32,7 @@ public class AuthService {
 
     public AuthResponse loginUser(AuthRequest request){
         manager.authenticate(new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword()));
-        UserEntity user = repository
+        var user = repository
                 .findByLogin(request.getLogin())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
@@ -55,7 +55,7 @@ public class AuthService {
                     .roles(Role.CLIENT)
                     .build();
             repository.save(user);//Save new user in db
-            var token = jwtUtils.createToken(user.getLogin(), user.getPassword());
+            String token = jwtUtils.createToken(user.getLogin(), user.getPassword());
             return new AuthResponse(token);
         }
         throw new BadRequestException("User already exists");

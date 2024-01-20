@@ -1,8 +1,6 @@
 package com.delivery.service.delivery_service.exceptions;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -14,7 +12,6 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Map;
 
 @Controller
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class ExceptionController implements ErrorController {
     private static final String PATH = "/errors";
@@ -23,7 +20,7 @@ public class ExceptionController implements ErrorController {
         return PATH;
     }
 
-    ErrorAttributes errorAttributes;
+    private final ErrorAttributes errorAttributes;
 
     @RequestMapping(ExceptionController.PATH)
     public ResponseEntity<ErrorDto> errorResponseEntity(WebRequest req) {

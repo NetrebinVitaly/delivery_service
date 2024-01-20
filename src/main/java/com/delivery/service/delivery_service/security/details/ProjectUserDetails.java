@@ -1,9 +1,7 @@
 package com.delivery.service.delivery_service.security.details;
 
 import com.delivery.service.delivery_service.entities.UserEntity;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,10 +9,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProjectUserDetails implements UserDetails {
 
-    UserEntity user;
+    private final UserEntity user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

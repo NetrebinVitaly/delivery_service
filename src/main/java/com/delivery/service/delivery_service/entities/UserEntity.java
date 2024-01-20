@@ -3,7 +3,6 @@ package com.delivery.service.delivery_service.entities;
 
 import com.delivery.service.delivery_service.entities.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,11 +19,9 @@ import lombok.experimental.FieldDefaults;
 public class UserEntity {
 
     @Id
-    @NotNull
     @Column(name = "login", nullable = false, length = 50)
     String login;
 
-    @NotNull
     @Column(name = "email", length = 50)
     String email;
 

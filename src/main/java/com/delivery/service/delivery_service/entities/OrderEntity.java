@@ -4,7 +4,6 @@ package com.delivery.service.delivery_service.entities;
 import com.delivery.service.delivery_service.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -27,7 +26,6 @@ public class OrderEntity {
     Long id;
 
     @Basic
-    @NotNull
     @Column(name = "order_status")
     OrderStatus status;
 
@@ -37,7 +35,6 @@ public class OrderEntity {
     String description;
 
     @Basic
-    @NotNull
     @Column(name = "order_address", nullable = false)
     String address;
 
