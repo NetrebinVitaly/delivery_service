@@ -28,7 +28,7 @@ public class UserService {
 
     public UserEntity createUser(@Valid UserDto dto, Role role) {
         validationUtil.isValid(dto);
-        if(userRepository.findByLogin(dto.getLogin()).isEmpty()){
+        if(userRepository.findByLogin(dto.getLogin()).isPresent()){
             throw new BadRequestException("User already exists");
         }
         log.info("Create {} in DB", dto.getEmail());

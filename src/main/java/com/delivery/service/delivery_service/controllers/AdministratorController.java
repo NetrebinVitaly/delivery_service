@@ -5,7 +5,7 @@ import com.delivery.service.delivery_service.dto.UserDto;
 import com.delivery.service.delivery_service.entities.OrderEntity;
 import com.delivery.service.delivery_service.entities.UserEntity;
 import com.delivery.service.delivery_service.entities.enums.Role;
-import com.delivery.service.delivery_service.services.DefaultOrderService;
+import com.delivery.service.delivery_service.services.OrderService;
 import com.delivery.service.delivery_service.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ import java.util.List;
 public class AdministratorController {
 
     UserService service;
-    DefaultOrderService defaultOrderService;
+    OrderService orderService;
 
     @Operation(summary = "Creating user")
     @PostMapping("/admin/{role}")
@@ -49,19 +49,19 @@ public class AdministratorController {
     @Operation(summary = "Get all orders")
     @GetMapping("/admin/orders")
     public ResponseEntity<List<OrderEntity>> getAllOrders() {
-        return new ResponseEntity<>(defaultOrderService.getAllOrders(), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.getAllOrders(), HttpStatus.OK);
     }
 
     @Operation(summary = "Get order description by id")
     @GetMapping("/admin/order/{id}")
     public ResponseEntity<String> getOrderDescription(@PathVariable Long id) {
-        return new ResponseEntity<>(defaultOrderService.showDescription(id), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.showDescription(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Change order status")
     @PatchMapping("/admin/order/{id}/{status}")
     public ResponseEntity<OrderEntity> updateOrderStatus(@RequestBody UpdateOrderStatusRequest request) {
-        return new ResponseEntity<>(defaultOrderService.updateOrderStatus(request), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.updateOrderStatus(request), HttpStatus.OK);
     }
 
 
