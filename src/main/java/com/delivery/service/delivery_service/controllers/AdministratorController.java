@@ -31,7 +31,7 @@ public class AdministratorController {
     @PostMapping("/admin/{role}")
     public ResponseEntity<UserEntity> createAdmin(@Valid  @RequestBody UserDto dto,
                                                   @PathVariable Role role){
-        return new ResponseEntity<>(service.create(dto, role), HttpStatus.OK);
+        return new ResponseEntity<>(service.create(dto, role), HttpStatus.CREATED);
     }
 
     @Operation(summary = "find admin by login")
@@ -59,7 +59,7 @@ public class AdministratorController {
     }
 
     @Operation(summary = "Change order status")
-    @PatchMapping("/admin/order/{id}/{status}")
+    @PatchMapping("/admin/order")
     public ResponseEntity<OrderEntity> updateOrderStatus(@RequestBody UpdateOrderStatusRequest request) {
         return new ResponseEntity<>(orderService.updateOrderStatus(request), HttpStatus.OK);
     }
