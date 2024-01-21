@@ -59,7 +59,7 @@ public class AdministratorController {
     }
 
     @Operation(summary = "Change order status")
-    @PatchMapping("/admin/order/{id}/{status}")
+    @PatchMapping("/admin/order")
     public ResponseEntity<OrderEntity> updateOrderStatus(@RequestBody UpdateOrderStatusRequest request) {
         return new ResponseEntity<>(orderService.updateOrderStatus(request), HttpStatus.OK);
     }
