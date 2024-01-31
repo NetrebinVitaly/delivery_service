@@ -43,7 +43,13 @@ public class DefaultUserService implements UserService{
     }
 
     @Override
-    public void deleteBy(String id) {
+    public void deleteBy(String login) {
+        userRepository
+                .delete(userRepository
+                        .findByLogin(login)
+                        .orElseThrow(()->new NotFoundException("User not found"))
+                );
+        log.info("User {} has been deleted", login);
     }
 
     @Override

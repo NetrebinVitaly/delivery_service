@@ -54,7 +54,8 @@ public class AdminControllerTest {
     @Test
     @DisplayName("GET /api/admin/ Return HTTP response status is OK if content type JSON ")
     public void findAdminByLogin_ReturnStatusOk() throws Exception {
-        mockMvc.perform(get("/api/admin/")).andExpectAll(
+        when(service.getBy("admin")).thenReturn(new UserEntity());
+        mockMvc.perform(get("/api/admin/admin")).andExpectAll(
                 status().isOk(),
                 content().contentType(MediaType.APPLICATION_JSON)
         );
@@ -74,6 +75,7 @@ public class AdminControllerTest {
     @Test
     @DisplayName("GET /api/admin/orders Return HTTP response status is OK if content type JSON")
     public void getAllOrders_ReturnStatusOk() throws Exception {
+        when(orderService.getAll()).thenReturn(List.of());
         mockMvc.perform(get("/api/admin/orders")).andExpectAll(
                 status().isOk(),
                 content().contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +85,8 @@ public class AdminControllerTest {
     @Test
     @DisplayName("GET /api/admin/orders Return HTTP response status is OK if content type JSON")
     public void getOrderDescription_ReturnStatusOk() throws Exception {
-        mockMvc.perform(get("/api/admin/order/")).andExpect(status().isOk());
+        when(orderService.showDescription(1L)).thenReturn("TestDescription");
+        mockMvc.perform(get("/api/admin/order/1")).andExpect(status().isOk());
     }
 
     @Test

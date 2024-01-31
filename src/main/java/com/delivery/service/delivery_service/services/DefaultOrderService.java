@@ -6,7 +6,6 @@ import com.delivery.service.delivery_service.dto.UpdateOrderStatusRequest;
 import com.delivery.service.delivery_service.entities.OrderEntity;
 import com.delivery.service.delivery_service.entities.UserEntity;
 import com.delivery.service.delivery_service.entities.enums.OrderStatus;
-import com.delivery.service.delivery_service.exceptions.BadRequestException;
 import com.delivery.service.delivery_service.exceptions.NotFoundException;
 import com.delivery.service.delivery_service.repositories.OrderRepository;
 import com.delivery.service.delivery_service.repositories.UserRepository;
@@ -80,7 +79,7 @@ public class DefaultOrderService implements OrderService{
     public void deleteBy(Long id) {
         if (orderRepository.findById(id).isEmpty()) System.out.println("Order not exist");
         orderRepository.deleteById(id);
-        if (orderRepository.findById(id).isPresent())throw new BadRequestException("Delete is failed");
+//        if (orderRepository.findById(id).isPresent())throw new BadRequestException("Delete is failed");
 
     }
 

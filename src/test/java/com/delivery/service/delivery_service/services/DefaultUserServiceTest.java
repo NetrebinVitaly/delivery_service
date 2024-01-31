@@ -4,7 +4,7 @@ import com.delivery.service.delivery_service.dto.UserDto;
 import com.delivery.service.delivery_service.entities.UserEntity;
 import com.delivery.service.delivery_service.entities.enums.Role;
 import com.delivery.service.delivery_service.exceptions.BadRequestException;
-import com.delivery.service.delivery_service.security.repositories.UserRepository;
+import com.delivery.service.delivery_service.repositories.UserRepository;
 import com.delivery.service.delivery_service.utils.ValidationUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -38,7 +38,7 @@ public class AuthService {
 
         String token = jwtUtils.createToken(
                 request.getLogin(),
-                user.getRoles().name()
+                user.getRoles()
         );
 
         return new AuthResponse(token);
@@ -55,7 +55,7 @@ public class AuthService {
                     .roles(Role.CLIENT)
                     .build();
             repository.save(user);//Save new user in db
-            String token = jwtUtils.createToken(user.getLogin(), user.getPassword());
+            String token = jwtUtils.createToken(user.getLogin(), user.getRoles());
             return new AuthResponse(token);
         }
         throw new BadRequestException("User already exists");

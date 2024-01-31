@@ -1,5 +1,6 @@
 package com.delivery.service.delivery_service.security.JwtUtils;
 
+import com.delivery.service.delivery_service.entities.enums.Role;
 import com.delivery.service.delivery_service.security.detailServices.ProjectUserDetailsService;
 import com.delivery.service.delivery_service.security.exception.JwtAuthenticationException;
 import io.jsonwebtoken.*;
@@ -38,9 +39,9 @@ public class JwtUtils {
     @Value("${jwt.lifetime}")
     Duration jwtLifeTime;
 
-    public String createToken(String login, String role) {
+    public String createToken(String login, Role role) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", role);
+        claims.put("roles", role.name());
         return  Jwts.builder()
                 .claims(claims)
                 .subject(login)
