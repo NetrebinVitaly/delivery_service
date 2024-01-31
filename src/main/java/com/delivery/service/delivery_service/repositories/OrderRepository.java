@@ -14,5 +14,4 @@ public interface OrderRepository
     Optional<List<OrderEntity>> findAllByCourier(UserEntity courier);
     Optional<List<OrderEntity>> findAllByClient(UserEntity client);
 
-    void deleteById(Long id);
 }
