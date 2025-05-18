@@ -27,15 +27,10 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
     @Mock
     UserRepository userRepository;
-    @Mock
-    PasswordEncoder bCryptPasswordEncoder;
-    @Mock
-    ValidationUtil validationUtil;
+
     @InjectMocks
     UserService service;
 
-    @Mock
-    Authentication authentication;
     @Mock
     SecurityContext context;
 
