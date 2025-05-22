@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 container('maven'){
-                    sh 'mvn clean package'
+                    sh 'mvn clean package -DskipTests'
                 }
 
             }
@@ -27,7 +27,7 @@ pipeline {
         stage('Test') {
             steps {
                 container('maven'){
-                    sh 'mvn test'
+                    sh 'mvn test -Dspring.profiles.active=test'
                 }
             }
         }
