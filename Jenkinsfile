@@ -1,20 +1,36 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+          label 'jenkins-agent'
+          yaml """
+            apiVersion: v1
+            kind: Pod
+            namespace: develop-tools
+            spec:
+              containers:
+              - name: maven
+                image: maven:3.9.9-eclipse-temurin-24-alpine
+                command: ['cat']
+                tty: true
+            """
+        }
+      }
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                container('maven'){
+                    sh 'mvn clean package -DskipTests'
+                }
+
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'scp target/*.jar user@server:/app'
+                container('maven'){
+                    sh 'mvn test'
+                }
             }
         }
     }
 }
+
