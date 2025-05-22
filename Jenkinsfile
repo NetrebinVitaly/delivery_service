@@ -27,7 +27,7 @@ pipeline {
         stage('Test') {
             steps {
                 container('maven'){
-                    sh 'mvn test -Dspring.profiles.active=test'
+                    sh 'mvn test'
                 }
             }
         }
