@@ -17,15 +17,15 @@ spec:
      imagePullPolicy: Always
      tty: true
      command: ["cat"]
-   - name: maven
-     image: maven:3.8.4-openjdk-17
-     resources:
-       requests:
-         cpu: "1000m"
-         memory: "2048Mi"
-     imagePullPolicy: Always
-     tty: true
-     command: ["cat"]
+//    - name: maven
+//      image: maven:3.8.4-openjdk-17
+//      resources:
+//        requests:
+//          cpu: "1000m"
+//          memory: "2048Mi"
+//      imagePullPolicy: Always
+//      tty: true
+//      command: ["cat"]
    - name: dind
      image: docker:dind
      imagePullPolicy: Always
@@ -50,13 +50,13 @@ pipeline {
 
    stages {
 
-       stage('Build') {
-           steps {
-               container('maven'){
-                   sh 'mvn clean package -DskipTests'
-               }
-           }
-       }
+//        stage('Build') {
+//            steps {
+//                container('maven'){
+//                    sh 'mvn clean package -DskipTests'
+//                }
+//            }
+//        }
        stage('Test') {
            steps {
                container('java17') {
