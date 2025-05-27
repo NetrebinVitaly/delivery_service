@@ -6,7 +6,7 @@ metadata:
  labels:
    name: worker
 spec:
- serviceAccountName: jenkins
+ serviceAccountName: jenkins-admin
  containers:
    - name: java17
      image: eclipse-temurin:17.0.9_9-jdk-jammy
