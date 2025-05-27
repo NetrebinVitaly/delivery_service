@@ -1,51 +1,61 @@
+def pod =
+"""
+apiVersion: v1
+kind: Pod
+metadata:
+ labels:
+   name: worker
+spec:
+ serviceAccountName: jenkins
+ containers:
+   - name: java17
+     image: eclipse-temurin:17.0.9_9-jdk-jammy
+     resources:
+       requests:
+         cpu: "1000m"
+         memory: "2048Mi"
+     imagePullPolicy: Always
+     tty: true
+     command: ["cat"]
+   - name: dind
+     image: docker:dind
+     imagePullPolicy: Always
+     tty: true
+     env:
+       - name: DOCKER_TLS_CERTDIR
+         value: ""
+     securityContext:
+       privileged: true
+"""
+
 pipeline {
-    agent {
-        kubernetes {
-            label 'jenkins-agent'
-            yaml """
-                apiVersion: v1
-                kind: Pod
-                namespace: develop-tools
-                spec:
-                    containers:
-                    - name: maven
-                      image: maven:3.9.9-eclipse-temurin-24-alpine
-                      command: ['cat']
-                      tty: true
-                      volumeMounts:
-                      - name: docker-sock
-                        mountPath: /var/run/docker.sock
-                    - name: dind
-                      image: docker:dind
-                      securityContext:
-                        privileged: true
-                      volumeMounts:
-                      - name: docker-sock
-                        mountPath: /var/run/docker.sock
-                    volumes:
-                    - name: docker-sock
-                      emptyDir: {}
-                """
-        }
-    }
-    stages {
-        stage('Build') {
-            steps {
-                container('maven'){
-                    sh 'mvn clean package -DskipTests'
-                }
-            }
-        }
-        stage('Test') {
-            steps {
-                container('maven'){
-                    sh '''
-                        apk add --no-cache docker
-                        export DOCKER_HOST=unix:///var/run/docker.sock
-                        mvn test
-                    '''
-                }
-            }
-        }
-    }
+   agent {
+       kubernetes {
+           yaml pod
+       }
+   }
+   environment {
+       DOCKER_HOST = 'tcp://localhost:2375'
+       DOCKER_TLS_VERIFY = 0
+   }
+
+   stages {
+
+       stage('Build') {
+           steps {
+               container('maven'){
+                   sh 'mvn clean package -DskipTests'
+               }
+           }
+       }
+       stage('Test') {
+           steps {
+               container('java17') {
+                   script {
+                       sh "./mvnw test"
+                   }
+               }
+           }
+       }
+   }
 }
