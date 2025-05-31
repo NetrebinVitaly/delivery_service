@@ -5,37 +5,17 @@ kind: Pod
 spec:
   containers:
   - name: builder
-    image: alpine:3.19
+    image: eclipse-temurin:17-jdk
     command: ['cat']
     tty: true
-    resources:
-      requests:
-        cpu: "1000m"
-        memory: "2Gi"
-      limits:
-        cpu: "2000m"
-        memory: "4Gi"
     env:
-    - name: MAVEN_OPTS
-      value: "-Xmx1G"
     - name: DOCKER_HOST
       value: "tcp://localhost:2375"
-    volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-sock
-  - name: docker-daemon
+  - name: dind
     image: docker:dind
     securityContext:
       privileged: true
-    env:
-    - name: DOCKER_TLS_CERTDIR
-      value: ""
-    volumeMounts:
-    - mountPath: /var/run/docker.sock
-      name: docker-sock
-  volumes:
-  - name: docker-sock
-    emptyDir: {}
+    args: ["--host", "tcp://0.0.0.0:2375", "--tls=false"]
 """
 
 pipeline {
@@ -44,25 +24,8 @@ pipeline {
            yaml pod
        }
    }
-   environment {
-       TESTCONTAINERS_RYUK_DISABLED = 'true'
-       TESTCONTAINERS_CHECKS_DISABLE = 'true'
-   }
 
     stages {
-        stage('Setup Environment') {
-            steps {
-                container('builder') {
-                    sh '''
-                    apk add --no-cache openjdk17 maven docker-cli
-                    # Настройка Testcontainers
-                    mkdir -p ~/.testcontainers.properties
-                    echo "ryuk.container.privileged=true" > ~/.testcontainers.properties
-                    echo "docker.host=tcp://localhost:2375" >> ~/.testcontainers.properties
-                    '''
-                }
-            }
-        }
 
         stage('Checkout') {
             steps {
@@ -83,7 +46,11 @@ pipeline {
         stage('Test') {
             steps {
                 container('builder') {
-                    sh 'mvn test'
+                    sh '''
+                    apt-get update && apt-get install -y docker.io
+                    docker --version
+                    mvn test -Ddocker.host=tcp://localhost:2375
+                    '''
                 }
             }
         }
