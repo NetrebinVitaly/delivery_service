@@ -86,26 +86,6 @@ pipeline {
                     sh 'mvn test'
                 }
             }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-            }
-        }
-
-        stage('Publish Results') {
-            steps {
-                container('builder') {
-                    archiveArtifacts 'target/*.jar'
-                }
-            }
         }
     }
-
-    post {
-        always {
-            cleanWs()
-        }
-    }
-
 }
