@@ -1,19 +1,57 @@
+def pod =
+"""
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: builder
+    image: eclipse-temurin:17-jdk
+    command: ['cat']
+    tty: true
+    env:
+    - name: DOCKER_HOST
+      value: "tcp://localhost:2375"
+  - name: dind
+    image: docker:dind
+    securityContext:
+      privileged: true
+    args: ["--host", "tcp://0.0.0.0:2375", "--tls=false"]
+"""
+
 pipeline {
-    agent any
+   agent {
+       kubernetes {
+           yaml pod
+       }
+   }
+
     stages {
+
+        stage('Checkout') {
+            steps {
+                container('builder') {
+                    checkout scm
+                }
+            }
+        }
+
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                container('builder') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
+
         stage('Test') {
             steps {
-                sh 'mvn test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                sh 'scp target/*.jar user@server:/app'
+                container('builder') {
+                    sh '''
+                    apt-get update && apt-get install -y docker.io
+                    docker --version
+                    mvn test -Ddocker.host=tcp://localhost:2375
+                    '''
+                }
             }
         }
     }
