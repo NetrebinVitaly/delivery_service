@@ -47,8 +47,6 @@ pipeline {
             steps {
                 container('builder') {
                     sh '''
-                    apt-get update && apt-get install -y docker.io
-                    docker --version
                     mvn test -Ddocker.host=tcp://localhost:2375
                     '''
                 }
