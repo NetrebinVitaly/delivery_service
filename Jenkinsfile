@@ -10,12 +10,12 @@ spec:
     tty: true
     env:
     - name: DOCKER_HOST
-      value: "tcp://localhost:2375"
+      value: "tcp://dind:2375"
   - name: dind
     image: docker:dind
     securityContext:
       privileged: true
-    args: ["--host", "tcp://0.0.0.0:2375", "--tls=false"]
+    args: ["--host", "tcp://dind:2375", "--tls=false"]
 """
 
 pipeline {
