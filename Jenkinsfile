@@ -5,7 +5,7 @@ kind: Pod
 spec:
   containers:
   - name: builder
-    image: maven:3.9.9-eclipse-temurin-24-alpine
+    image: maven:3.9.9-eclipse-temurin-21-alpine
     command: ['cat']
     tty: true
     env:
