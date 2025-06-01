@@ -27,14 +27,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                container('builder') {
-                    checkout scm
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 container('builder') {
