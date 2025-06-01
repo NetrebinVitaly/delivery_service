@@ -10,12 +10,12 @@ spec:
     tty: true
     env:
     - name: DOCKER_HOST
-      value: "tcp://dind:2375"
+      value: "tcp://localhost:2375"
   - name: dind
     image: docker:dind
     securityContext:
       privileged: true
-    args: ["--host", "tcp://dind:2375", "--tls=false"]
+    args: ["--host", "tcp://0.0.0.0:2375", "--tls=false"]
 """
 
 pipeline {
@@ -47,6 +47,7 @@ pipeline {
             steps {
                 container('builder') {
                     sh '''
+                    export DOCKER_HOST=tcp://localhost:2375
                     mvn test -Ddocker.host=tcp://localhost:2375
                     '''
                 }
