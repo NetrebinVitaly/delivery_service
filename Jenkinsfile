@@ -8,14 +8,6 @@ spec:
     image: maven:3.9.9-eclipse-temurin-21-alpine
     command: ['cat']
     tty: true
-    env:
-    - name: DOCKER_HOST
-      value: "tcp://localhost:2375"
-  - name: dind
-    image: docker:dind
-    securityContext:
-      privileged: true
-    args: ["--host", "tcp://0.0.0.0:2375", "--tls=false"]
 """
 
 pipeline {
@@ -47,8 +39,10 @@ pipeline {
             steps {
                 container('builder') {
                     sh '''
-                    export DOCKER_HOST=tcp://localhost:2375
-                    mvn test -Ddocker.host=tcp://localhost:2375
+                    apk add --no-cache docker-cli
+                    docker --version
+
+                    mvn test
                     '''
                 }
             }
